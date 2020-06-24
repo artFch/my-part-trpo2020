@@ -39,9 +39,9 @@ warnings.filterwarnings('ignore')
 
 """# ____________________"""
 
-data = pd.read_csv('/my-part-trpo2020/data_train.csv')
+data = pd.read_csv('C:/help_files/data_train.csv')
 
-data_test = pd.read_csv('/my-part-trpo2020/data_test_.csv')
+data_test = pd.read_csv('C:/help_files/data_test_.csv')
 
 X_train = data.FULLNAME.values
 gender_train = data.GENDER.values
@@ -73,19 +73,19 @@ len(set(data.NATION))
 
 data.head()
 
-with open('/my-part-trpo2020/label_enc.pkl', 'wb') as f:
+with open('C:/help_files/label_enc.pkl', 'wb') as f:
     pickle.dump(encoder, f)
 
 train, val = train_test_split(data, test_size=0.2, random_state=42)
 
-train.to_csv('/my-part-trpo2020/train.csv', index=None)
-val.to_csv('/my-part-trpo2020/test.csv', index=None)
+train.to_csv('C:/help_files/train.csv', index=None)
+val.to_csv('C:/help_files/test.csv', index=None)
 
 data_test.FULLNAME = data_test.FULLNAME.apply(split_fio)
 
 data_test.head()
 
-data_test.to_csv('/my-part-trpo2020/comp_test.csv', index=None)
+data_test.to_csv('C:/help_files/comp_test.csv', index=None)
 
 tokenize = lambda x: x.split(' ')
 
@@ -94,7 +94,7 @@ LABEL = Field(sequential=False, use_vocab=False, is_target=True)
 
 nation_fields = [('FULLNAME', TEXT), ('NATION', LABEL)]
 
-trn, vld = TabularDataset.splits(path='/my-part-trpo2020/',
+trn, vld = TabularDataset.splits(path='C:/help_files/',
                                  train='train.csv',
                                  validation="test.csv",
                                  format='csv',
@@ -149,10 +149,10 @@ class SimpleBiLSTM(nn.Module):
 model = SimpleBiLSTM(inp_dim=len(TEXT.vocab))
 model.cuda()
 
-model.load_state_dict(torch.load('/my-part-trpo2020/best_model.pt'))
+model.load_state_dict(torch.load('C:/help_files/best_model.pt'))
 model.eval()
 
-with open('/my-part-trpo2020/label_enc.pkl', 'rb') as f:
+with open('C:/help_files/label_enc.pkl', 'rb') as f:
     encoder = pickle.load(f)
 
 def predict(name, model=model):
